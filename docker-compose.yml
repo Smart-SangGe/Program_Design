@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  web:
+    image: git.mamahaha.work/sangge/chatroom:latest
+    command: uwsgi --ini uwsgi.ini
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+  
+  nginx:
+    image: nginx:latest
+    ports:
+      - "81:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./logs/nginxlogs:/var/log/nginx
+    depends_on:
+      - web
+
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password  # 设置你的 root 密码
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
