@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
+import Crypto
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a_secure_key'
@@ -28,7 +29,6 @@ class RegistrationForm(FlaskForm):
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        # 实际中，应该加密密码，此处为简化代码未进行加密
         user = User(username=form.username.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
