@@ -33,7 +33,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Build and push Docker image
-      script:
-        - export APP_VERSION=$(python -c "from config import APP_VERSION; print(APP_VERSION)")
-        - docker buildx build . -t git.mamahaha.work/sangge/chatroom:$APP_VERSION
-        - docker push git.mamahaha.work/sangge/chatroom:$APP_VERSION
+      run: |
+        export APP_VERSION=$(python -c "from config import APP_VERSION; print(APP_VERSION)")
+        docker buildx build . -t git.mamahaha.work/sangge/chatroom:$APP_VERSION
+        docker push git.mamahaha.work/sangge/chatroom:$APP_VERSION
