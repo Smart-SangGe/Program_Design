@@ -23,6 +23,10 @@ login_manager.init_app(app)
 # 初始化数据库
 db.init_app(app)
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 # 主页
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -35,12 +39,6 @@ def index():
         session['username'] = username
         return redirect(url_for('chat'))
 
-
-# 数据模型
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    password = db.Column(db.String(64), nullable=False)
 
 # 注册表单
 class RegistrationForm(FlaskForm):
@@ -94,7 +92,7 @@ def login():
 # 聊天页
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
-    return 
+    return render_template("chat.html", title="ChatRoom")
 
 
 if __name__ == '__main__':
