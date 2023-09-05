@@ -10,6 +10,9 @@ jobs:
   build:
     name: build image
     runs-on: ubuntu-latest
+
+    container:
+      image: catthehacker/ubuntu:act-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
