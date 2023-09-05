@@ -3,4 +3,5 @@ pymysql
 Flask-SQLAlchemy
 Flask-WTF
 uwsgi
-pycryptdome
+hashlib
+Flask-SocketIO
