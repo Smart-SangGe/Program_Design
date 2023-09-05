@@ -33,4 +33,3 @@ jobs:
       run: |
         export APP_VERSION=$(python -c "from config import APP_VERSION; print(APP_VERSION)")
         docker buildx build . -t git.mamahaha.work/sangge/chatroom:$APP_VERSION
-        docker push git.mamahaha.work/sangge/chatroom:$APP_VERSION
