@@ -29,9 +29,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.TOKEN }}
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
     - name: Build and push Docker image
       run: |
         export APP_VERSION=$(python -c "from config import APP_VERSION; print(APP_VERSION)")
