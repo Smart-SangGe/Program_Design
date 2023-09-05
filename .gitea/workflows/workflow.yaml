@@ -17,6 +17,7 @@ jobs:
     - name: Login to Gitea Container Registry
       uses: docker/login-action@v1
       with:
+        registry: git.mamahaha.work
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.TOKEN }}
 
