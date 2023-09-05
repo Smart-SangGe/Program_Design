@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+	<div class="container">
+		<h1>Cyberpunk ChatRoom</h1>
+		<p>Welcome to the dark side of the web. Explore a world of neon lights, technology, and endless possibilities.</p>
+		<canvas id="background"></canvas>
+        <a href="{{ url_for('login') }}" class="btn">Login</a>
+        <a href="{{ url_for('register') }}" class="btn">Register</a>
+	</div>
+	<script src="{{ url_for('static', filename='js/coderain.js') }}"></script>
+    
+</body>
+</html>
+
