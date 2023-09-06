@@ -32,7 +32,11 @@ jobs:
     - name: Build Docker image
       run: |
         export APP_VERSION=$(python -c "from config import APP_VERSION; print(APP_VERSION)")
-        docker buildx build . -t git.mamahaha.work/sangge/chatroom:$APP_VERSION
+        docker buildx build . -t git.mamahaha.work/sangge/chatroom:$APP_VERSION -f Dockerfile
+        docker tag git.mamahaha.work/sangge/chatroom:$APP_VERSION git.mamahaha.work/sangge/chatroom:latest
+        docker buildx build . -t git.mamahaha.work/sangge/chatnginx:$APP_VERSION -f Dockerfile
+        docker tag git.mamahaha.work/sangge/chatnginx:$APP_VERSION git.mamahaha.work/sangge/chatnginx:latest
+        
 
     - uses: actions/checkout@v3
     - name: copy file via ssh password

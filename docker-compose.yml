@@ -2,21 +2,18 @@ version: '3'
 
 services:
   web:
-    image: git.mamahaha.work/sangge/chatroom:0.0.1
+    image: git.mamahaha.work/sangge/chatroom:latest
     command: uwsgi --ini config/uwsgi.ini
-    volumes:
-      - .:/app
     # depends_on:
     #   - db
     expose:
       - "8000"
   
   nginx:
-    image: nginx:latest
+    image: chatnginx:latest
     ports:
       - "81:80"
     volumes:
-      - config/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./logs/nginxlogs:/var/log/nginx
     depends_on:
       - web
