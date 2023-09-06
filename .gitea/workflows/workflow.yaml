@@ -44,5 +44,4 @@ jobs:
         username: ${{ secrets.SSHUSERNAME }}
         password: ${{ secrets.PASSWORD }}
         script: |
-
-          cd E:\chatroom;curl https://git.mamahaha.work/sangge/Program_Design/raw/branch/main/docker-compose.yml -o docker-compose.yml;docker compose up -d
+          cd E:\chatroom;curl https://git.mamahaha.work/sangge/Program_Design/raw/branch/main/docker-compose.yml -o docker-compose.yml;docker compose up -d;docker rmi $(docker images -f "dangling=true" -q)
