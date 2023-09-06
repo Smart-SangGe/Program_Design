@@ -7,6 +7,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo, Regexp
 from flask_login import LoginManager, current_user, login_user, UserMixin
 from db_model import db, User, Message, FriendRequest
+import sqlalchemy.exc
 
 
 app = Flask(__name__)
@@ -52,12 +53,10 @@ def register():
         try:
             db.session.add(user)
             db.session.commit()
-        except :
+            return redirect(url_for('login'))
+        except sqlalchemy.exc.DBAPIError:
             db.session.rollback()
-            # 这里你可以添加你的错误处理代码，例如向用户显示一个错误消息
-            flash('用户名已存在，请选择其他用户名。', 'danger')
-        flash('Account created for {}!'.format(form.username.data), 'success')
-        return redirect(url_for('login'))
+            flash('用户名已存在，请选择其他用户名。', 'danger')        
     return render_template('register.html', title='Register', form=form)
 
 # 登录表单
