@@ -36,16 +36,6 @@ jobs:
         docker tag git.mamahaha.work/sangge/chatroom:$APP_VERSION git.mamahaha.work/sangge/chatroom:latest
         docker buildx build . -t git.mamahaha.work/sangge/chatnginx:$APP_VERSION -f Dockerfile
         docker tag git.mamahaha.work/sangge/chatnginx:$APP_VERSION git.mamahaha.work/sangge/chatnginx:latest
-        
-    - name: copy file via ssh password
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        source: "docker-compose.yml"
-        target: E:\chatroom
 
     - name: Start Docker Compose
       uses: appleboy/ssh-action@master
@@ -54,4 +44,5 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         script: |
-          cd E:\chatroom;docker compose up    
+
+          cd E:\chatroom;curl https://git.mamahaha.work/sangge/Program_Design/raw/branch/main/docker-compose.yml -o docker-compose.yml;docker compose up    
