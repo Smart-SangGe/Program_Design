@@ -10,7 +10,7 @@ services:
       - "8000"
   
   nginx:
-    image: chatnginx:latest
+    image: git.mamahaha.work/sangge/chatnginx:latest
     ports:
       - "81:80"
     volumes:
