@@ -5,13 +5,13 @@ from flask_wtf import FlaskForm
 from flask_socketio import SocketIO
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo, Regexp
-from sqlalchemy.exc import IntegrityError
-from flask_login import LoginManager
-from db_model import db, User
+from flask_login import LoginManager, current_user, login_user, UserMixin
+from db_model import db, User, Message, FriendRequest
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a_secure_key'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 socketio = SocketIO()
 socketio.init_app(app)
@@ -28,17 +28,12 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 # 主页
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
-    if request.method == 'GET':
-        if 'username' in session:
-            return redirect(url_for('chat'))
-        return render_template('index.html')
-    else:
-        username = request.form.get('username')
-        session['username'] = username
+    if 'username' in session:
         return redirect(url_for('chat'))
-
+    return render_template('index.html')
+    
 
 # 注册表单
 class RegistrationForm(FlaskForm):
@@ -57,7 +52,7 @@ def register():
         try:
             db.session.add(user)
             db.session.commit()
-        except IntegrityError:
+        except :
             db.session.rollback()
             # 这里你可以添加你的错误处理代码，例如向用户显示一个错误消息
             flash('用户名已存在，请选择其他用户名。', 'danger')
