@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from flask_socketio import SocketIO
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo, Regexp
-from flask_login import LoginManager, current_user, login_user, UserMixin
+from flask_login import LoginManager, current_user, login_required, login_user, UserMixin
 from db_model import db, User, Message, FriendRequest
 import sqlalchemy.exc
 
@@ -75,9 +75,7 @@ def login():
         
         if user and user.password == encpass:
             # 如果用户存在并且密码正确
-            # 这里你可以添加登录用户的逻辑，例如使用 Flask-Login 的 login_user 方法
-            # login_user(user)
-            flash('登录成功!', 'success')
+            login_user(user)
             return redirect(url_for('chat')) 
         else:
             flash('登录失败。请检查用户名和密码是否正确。', 'danger')
@@ -85,7 +83,9 @@ def login():
 
 # 聊天页
 @app.route('/chat', methods=['GET', 'POST'])
+@login_required
 def chat():
+    
     return render_template("chat.html", title="ChatRoom")
 
 
