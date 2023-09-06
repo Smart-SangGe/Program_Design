@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>好友申请列表</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h2>好友申请</h2>
+
+<ul>
+    {% for req in requests %}
+        <li>
+            {{ req.sender.username }} 想添加你为好友。
+            <button onclick="acceptRequest({{ req.id }})">接受</button>
+            <button onclick="rejectRequest({{ req.id }})">拒绝</button>
+        </li>
+    {% endfor %}
+</ul>
+
+<script>
+function acceptRequest(requestId) {
+    $.post("/acceptFriendRequest", { requestId: requestId }, function(data) {
+        if (data.status === "success") {
+            alert(data.message);
+            location.reload();  // 刷新页面
+        } else {
+            alert(data.error);
+        }
+    });
+}
+
+function rejectRequest(requestId) {
+    $.post("/rejectFriendRequest", { requestId: requestId }, function(data) {
+        if (data.status === "success") {
+            alert(data.message);
+            location.reload();  // 刷新页面
+        } else {
+            alert(data.error);
+        }
+    });
+}
+</script>
+
+</body>
+</html>
