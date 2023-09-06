@@ -5,7 +5,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 90vh;
 }
 
 .login-container {
@@ -54,4 +54,13 @@ input[type="text"], input[type="password"] {
 
 p {
     text-align: center;
+}
+.flash {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    z-index: 99;
 }
