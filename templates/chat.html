@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+
     <title>ChatRoom</title>
 </head>
 <body>
@@ -16,8 +17,22 @@
             <li class="friend-item">Bob</li>
             <li class="friend-item">Charlie</li>
         </ul>
+        <div class="friend-actions">
+            <button class="add-friend-btn">添加好友</button>
+            
+            <div id="searchModal" style="display:none;">
+                <input type="text" id="friendUsername" placeholder="输入好友的 username">
+                <button id="sendRequest">发送请求</button>
+            </div>
+            
+            <button class="friend-requests-btn">好友申请列表</button>
+        </div>
+        <a href="{{ url_for('logout') }}" id="logout-btn" class="button-style">退出登录</a>
     </div>
     <div class="chat-container">
+        {% for message in get_flashed_messages() %}
+			<div class=flash>{{ message }}</div>
+        {% endfor %}
         <div class="chat-header">
             <h2>Chatroom</h2>
         </div>
@@ -31,8 +46,13 @@
         </div>
         <div class="chat-input">
             <input type="text" placeholder="Type a message...">
-            <button>Send</button>
+            <button onclick="sendMessage()">Send</button>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/addfriends.js') }}"></script>
 </body>
 </html>
