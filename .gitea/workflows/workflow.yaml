@@ -29,7 +29,27 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.TOKEN }}
 
-    - name: Build and push Docker image
+    - name: Build Docker image
       run: |
         export APP_VERSION=$(python -c "from config import APP_VERSION; print(APP_VERSION)")
         docker buildx build . -t git.mamahaha.work/sangge/chatroom:$APP_VERSION
+
+    - uses: actions/checkout@v3
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        source: "docker-compose.yml"
+        target: E:\chatroom
+
+    - name: Start Docker Compose
+      uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd E:\chatroom;docker compose up    
