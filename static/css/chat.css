@@ -116,3 +116,40 @@ body {
     background-color: #e0e0e0;  /* 鼠标悬停时的背景颜色 */
 }
 
+.friend-actions {
+    position: relative;
+    display: flex;
+    justify-content: space-between;  /* 使按钮之间有空间 */
+}
+
+.add-friend-btn, .friend-requests-btn {
+    padding: 5px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.add-friend-btn:hover, .friend-requests-btn:hover {
+    background-color: #0056b3;
+}
+
+#logout-btn {
+    padding: 10px 20px;
+    background-color: #f44336;  /* 红色背景 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#logout-btn:hover {
+    background-color: #d32f2f;  /* 深红色背景 */
+}
+
+
+
