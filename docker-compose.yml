@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  web:
+  app:
     image: git.mamahaha.work/sangge/chatroom:latest
     command: uwsgi --ini config/uwsgi.ini
     # depends_on:
@@ -16,7 +16,7 @@ services:
     volumes:
       - ./logs/nginxlogs:/var/log/nginx
     depends_on:
-      - web
+      - app
 
 #   db:
 #     image: mariadb:latest
