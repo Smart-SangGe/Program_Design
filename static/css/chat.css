@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #e5ddd5; /* Telegram-like background color */
+    background-color: #2f0c35; /* Telegram-like background color */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,13 +9,16 @@ body {
 }
 
 .chat-container {
-    width: 400px;
-    border: 1px solid #ccc;
+    position: relative;
+    width: 1300px;
+    height: 100%;
+    border: 1px solid #000000;
     background-color: #fff;
-    border-radius: 10px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .chat-header {
@@ -75,3 +78,41 @@ body {
 .chat-input button:hover {
     background-color: #1e7ca0;
 }
+
+.friends-container {
+    width: 300px;  /* 或其他你喜欢的宽度 */
+    height: inherit;
+    background-color: #aeacf3;
+    border: 1px solid #000000;
+    overflow-y: auto;  /* 如果好友太多，可以滚动查看 */
+}
+
+.friends-header{
+    text-align: center;
+
+}
+
+.friend-list {
+    list-style-type: none;  /* 去掉默认的列表标记 */
+    padding: 0;
+    margin: 0;
+}
+
+.friend-item {
+    padding: 10px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #0d2c0e;
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.friend-item:last-child {
+    border-bottom: none;  /* 去掉最后一个好友的底部边框 */
+}
+
+.friend-item:hover {
+    background-color: #e0e0e0;  /* 鼠标悬停时的背景颜色 */
+}
+
