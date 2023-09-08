@@ -1,7 +1,15 @@
 $(document).ready(function() {
-    // 当点击添加好友按钮时，显示搜索框
+    var isModalOpen = false;
+
+    // 当点击添加好友按钮时
     $(".add-friend-btn").click(function() {
-        $("#searchModal").show();
+        if (isModalOpen) {
+            $("#searchModal").hide();  // 关闭模态窗口
+            isModalOpen = false;
+        } else {
+            $("#searchModal").show();  // 显示模态窗口
+            isModalOpen = true;
+        }
     });
 
     // 当点击发送请求按钮时
