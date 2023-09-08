@@ -1,14 +1,14 @@
-$(document).ready(function() {
-    $(".add-friend-btn").click(function() {
-        $.post("/addfriends", {}, function(data) {
-            if (data.status === "success") {
-                alert(data.message);
-            } else {
-                alert("添加失败");
-            }
-        });
-    });
-});
+// $(document).ready(function() {
+//     $(".add-friend-btn").click(function() {
+//         $.post("/sendFriendRequest", {}, function(data) {
+//             if (data.status === "success") {
+//                 alert(data.message);
+//             } else {
+//                 alert("添加失败");
+//             }
+//         });
+//     });
+// });
 
 $(document).ready(function() {
     // 当点击添加好友按钮时，显示搜索框
