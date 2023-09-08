@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Friends</title>
+</head>
+<body>
+    <h1>Delete Friends</h1>
+    <ul>
+        {% for friend in friends_list %}
+            <li>{{ friend.username }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
