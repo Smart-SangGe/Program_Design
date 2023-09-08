@@ -13,9 +13,9 @@
             <h2>Friends</h2>
         </div>
         <ul class="friend-list">
-            <li class="friend-item">Alice</li>
-            <li class="friend-item">Bob</li>
-            <li class="friend-item">Charlie</li>
+            {% for friend in friends %}
+                <li class="friend-item">{{ friend.username }}</li>
+            {% endfor %}
         </ul>
         <div class="friend-actions">
             <button class="add-friend-btn">添加好友</button>
