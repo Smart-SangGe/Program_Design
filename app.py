@@ -235,14 +235,15 @@ def rejectFriendRequest():
 
     return jsonify(status="success", message="已拒绝好友请求")
 
+# 删除好友
 @app.route('/deleteFriend', methods=['GET'])
 @login_required
 def deleteFriend():
     # 从数据库中获取所有好友
-    pending_requests = FriendRequest.query.filter_by(receiver_id=current_user.id).all()
+    friends_list = current_user.friends.all()
     
     # 这里可以直接将它们传递给前端模板来展示
-    return render_template('delete_friends.html', requests=pending_requests)
+    return render_template('delete_friends.html', friends_list=friends_list)
 
 
 # 退出登录

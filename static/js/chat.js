@@ -4,12 +4,15 @@ var currentReceiverId = null;
 
 socket.on('new_message', function(data) {
     var messageContainer = document.createElement('div');
-
-    // 检查发送方是否是当前用户
-    if (String(data.sender_id) === String(userId)) {
+    
+    // 狠狠的监听
+    if (String(data.sender_id) == String(userId)) {
         messageContainer.className = "message sent";
-    } else {
+    } else if(String(data.receiver_id) == String(userId) && String(currentReceiverId) == String(data.sender_id)) {
         messageContainer.className = "message received";
+    } else{
+
+        return
     }
  
     var p = document.createElement('p');
@@ -22,13 +25,7 @@ socket.on('new_message', function(data) {
 function sendMessage() {
     var input = document.getElementById('message');
     var receiverId = currentReceiverId
-    socket.emit('new_message', {message: input.value, receiver_id: receiverId});
-
-    var messageContainer = document.createElement('div');
-    messageContainer.className = "message sent"
-    var p = document.createElement('p');
-    p.textContent = input.value;
-    messageContainer.appendChild(p);
+    socket.emit('new_message', {message: input.value, sender_id: userId,receiver_id: receiverId});
     input.value = '';
 }
 
