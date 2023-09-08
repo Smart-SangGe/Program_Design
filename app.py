@@ -98,6 +98,30 @@ def chat():
     friends_list = current_user.friends.all()
     return render_template("chat.html", title="ChatRoom", friends=friends_list)
 
+# 获取聊天记录
+@app.route('/getChatHistory', methods=['GET'])
+@login_required
+def get_chat_history():
+    
+    friend_id = request.args.get('friend_id', type=int)
+    
+    current_user_id = current_user.id
+
+    # 从数据库中查询与特定好友的聊天记录
+    messages_from_db = Message.query.filter(
+        (Message.sender_id == current_user_id) & (Message.receiver_id == friend_id) |
+        (Message.sender_id == friend_id) & (Message.receiver_id == current_user_id)
+    ).order_by(Message.timestamp).all()
+
+    # 将数据库中的记录转换为你所需要的格式
+    messages = [{
+        "content": message.content,
+        "sent_by_me": True if message.sender_id == current_user_id else False
+    } for message in messages_from_db]
+
+    return jsonify({"messages": messages})
+
+
 # 添加好友
 @app.route('/sendFriendRequest', methods=['POST'])
 @login_required

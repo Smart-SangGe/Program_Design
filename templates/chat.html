@@ -14,7 +14,7 @@
         </div>
         <ul class="friend-list">
             {% for friend in friends %}
-                <li class="friend-item">{{ friend.username }}</li>
+                <li class="friend-item" onclick="loadChat({{ friend.id }})">{{ friend.username }}</li>
             {% endfor %}
         </ul>
         <div class="friend-actions">
