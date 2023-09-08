@@ -1,20 +1,47 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port);
+var currentReceiverId = null;
+
 
 socket.on('new_message', function(data) {
-    var li = document.createElement('li');
-    li.textContent = data.message;
-    document.getElementById('messages').appendChild(li);
+    var messageContainer = document.createElement('div');
+
+    // 检查发送方是否是当前用户
+    if (String(data.sender_id) === String(userId)) {
+        messageContainer.className = "message sent";
+    } else {
+        messageContainer.className = "message received";
+    }
+ 
+    var p = document.createElement('p');
+    p.textContent = data.message;
+    
+    messageContainer.appendChild(p);
+    document.getElementById('chat-messages').appendChild(messageContainer);
 });
 
 function sendMessage() {
     var input = document.getElementById('message');
-    socket.emit('send_message', {message: input.value});
+    var receiverId = currentReceiverId
+    socket.emit('new_message', {message: input.value, receiver_id: receiverId});
+
+    var messageContainer = document.createElement('div');
+    messageContainer.className = "message sent"
+    var p = document.createElement('p');
+    p.textContent = input.value;
+    messageContainer.appendChild(p);
     input.value = '';
 }
 
+$(document).ready(function() {
+    $(".friend-item").click(function() {
+        // 从data-id属性中获取receiverId并存储到全局变量中
+        currentReceiverId = $(this).attr('data-id');
+    });
+});
+
 function loadChat(friendId) {
     $.ajax({
-        url: "/get_chat_history",
+        url: "/getChatHistory",
         data: { "friend_id": friendId },
         type: "GET",
         dataType: "json",

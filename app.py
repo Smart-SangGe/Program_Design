@@ -7,6 +7,7 @@ from wtforms.validators import DataRequired, Length, EqualTo, Regexp
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from db_model import db, User, Message, FriendRequest, friendship
 import sqlalchemy.exc
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -22,6 +23,8 @@ login_manager.init_app(app)
 
 # 初始化数据库
 db.init_app(app)
+user_sockets = {}
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -77,6 +80,7 @@ def login():
             if user and user.password == encpass:
                 # 如果用户存在并且密码正确
                 login_user(user)
+                session['user_id'] = user.id
                 flash(f"欢迎回来，{user.username}!")
                 return redirect(url_for('chat'))
             else:
@@ -84,11 +88,32 @@ def login():
         
     return render_template('login.html', title='Login', form=form)
 
+
 # 处理消息
-@socketio.on('send_message')
+@socketio.on('new_message')
 def handle_message(data):
-    message = data['message']
-    socketio.emit('new_message', {'message': message})
+    message_content = data['message']
+    receiver_id = data['receiver_id']  # 从前端发送的数据中获取接收者的ID
+    if receiver_id == None:
+        return
+
+    # 创建一个新的消息对象
+    new_message = Message(
+        content=message_content,
+        sender_id=current_user.id, 
+        receiver_id=receiver_id,
+        timestamp=datetime.utcnow()  # 可以选择设置这个，但由于你已经在模型中设置了默认值，这不是必须的
+    )
+    # 添加到数据库会话并提交
+    db.session.add(new_message)
+    db.session.commit()
+
+    socketio.emit('new_message', {
+        'message': new_message.content, 
+        'sender_id': new_message.sender_id,
+        'receiver_id': new_message.receiver_id
+    })
+    
     
     
 # 聊天页
@@ -96,7 +121,8 @@ def handle_message(data):
 @login_required
 def chat():
     friends_list = current_user.friends.all()
-    return render_template("chat.html", title="ChatRoom", friends=friends_list)
+    user_id = current_user.id
+    return render_template("chat.html", title="ChatRoom", friends=friends_list, user_id=user_id)
 
 # 获取聊天记录
 @app.route('/getChatHistory', methods=['GET'])
@@ -209,6 +235,15 @@ def rejectFriendRequest():
 
     return jsonify(status="success", message="已拒绝好友请求")
 
+@app.route('/deleteFriend', methods=['GET'])
+@login_required
+def deleteFriend():
+    # 从数据库中获取所有好友
+    pending_requests = FriendRequest.query.filter_by(receiver_id=current_user.id).all()
+    
+    # 这里可以直接将它们传递给前端模板来展示
+    return render_template('delete_friends.html', requests=pending_requests)
+
 
 # 退出登录
 @app.route('/logout', methods=['GET'])
@@ -221,4 +256,4 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # 创建数据库表
     # app.run(debug=True)
-    socketio.run(app, debug=True)
+    socketio.run(app, host="0.0.0.0", debug=True)

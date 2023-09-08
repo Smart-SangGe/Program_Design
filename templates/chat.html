@@ -8,13 +8,21 @@
     <title>ChatRoom</title>
 </head>
 <body>
+    <script>
+        var userId = "{{ user_id }}"
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/addfriends.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
     <div class="friends-container">
         <div class="friends-header">
             <h2>Friends</h2>
         </div>
         <ul class="friend-list">
             {% for friend in friends %}
-                <li class="friend-item" onclick="loadChat({{ friend.id }})">{{ friend.username }}</li>
+                <li class="friend-item" data-id="{{ friend.id }}" onclick="loadChat({{ friend.id }}) ">{{ friend.username }}</li>
             {% endfor %}
         </ul>
         <div class="friend-actions">
@@ -35,23 +43,12 @@
         <div class="chat-header">
             <h2>Chatroom</h2>
         </div>
-        <div class="chat-messages">
-            <div class="message received">
-                <p>Hello! How are you?</p>
-            </div>
-            <div class="message sent">
-                <p>I'm good, thanks!</p>
-            </div>
+        <div class="chat-messages" id="chat-messages">
         </div>
         <div class="chat-input">
-            <input type="text" placeholder="Type a message...">
+            <input type="text" id="message" placeholder="Type a message...">
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='js/addfriends.js') }}"></script>
 </body>
 </html>
