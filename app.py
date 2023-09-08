@@ -69,7 +69,6 @@ class LoginForm(FlaskForm):
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     data = get_flashed_messages()
-    print(data)
     form = LoginForm()
     if request.method == "POST":
         if form.validate_on_submit():
@@ -96,11 +95,12 @@ def handle_message(data):
 @app.route('/chat', methods=['GET', 'POST'])
 @login_required
 def chat():
-    
-    return render_template("chat.html", title="ChatRoom")
+    friends_list = current_user.friends.all()
+    return render_template("chat.html", title="ChatRoom", friends=friends_list)
 
 # 添加好友
 @app.route('/sendFriendRequest', methods=['POST'])
+@login_required
 def sendFriendRequest():
     friend_username = request.form.get('username')
     
@@ -111,8 +111,9 @@ def sendFriendRequest():
         return jsonify(status="error", error="该用户不存在")
 
     # 创建好友请求记录
-    # 这里我们假设你已经有了当前登录的用户的信息
-    current_user = current_user()
+    
+    if current_user.id == friend.id:
+        return jsonify(status="error", error="无法添加自己为好友")
     
     friend_request = FriendRequest(sender_id=current_user.id, receiver_id=friend.id)
     db.session.add(friend_request)
@@ -121,9 +122,9 @@ def sendFriendRequest():
     return jsonify(status="success", message="好友请求已发送")
 
 # 好友申请列表
-@app.route()
+@app.route('/friendRequests', methods=['GET'])
+@login_required
 def friendRequests():
-    current_user = current_user()
 
     # 从数据库中获取所有未处理的好友请求
     pending_requests = FriendRequest.query.filter_by(receiver_id=current_user.id).all()
@@ -133,6 +134,7 @@ def friendRequests():
 
 # 同意好友申请
 @app.route('/acceptFriendRequest', methods=['POST'])
+@login_required
 def acceptFriendRequest():
     request_id = request.form.get('requestId')
     
@@ -151,9 +153,9 @@ def acceptFriendRequest():
 
     # 在friendship表中创建新的记录
     # 添加第一条记录
-    db.session.add(friendship(user_id=sender.id, friend_id=receiver.id))
+    db.session.execute(friendship.insert().values(user_id=sender.id, friend_id=receiver.id))
     # 添加第二条记录
-    db.session.add(friendship(user_id=receiver.id, friend_id=sender.id))
+    db.session.execute(friendship.insert().values(user_id=receiver.id, friend_id=sender.id))
 
     # 删除原始的FriendRequest记录
     db.session.delete(friend_request)
@@ -165,6 +167,7 @@ def acceptFriendRequest():
 
 # 拒绝好友申请
 @app.route('/rejectFriendRequest', methods=['POST'])
+@login_required
 def rejectFriendRequest():
     request_id = request.form.get('requestId')
     
@@ -184,7 +187,7 @@ def rejectFriendRequest():
 
 
 # 退出登录
-@app.route('/logout', method=['GET'])
+@app.route('/logout', methods=['GET'])
 def logout():
     logout_user()
     return redirect(url_for('login'))  # 重定向到登录页面或主页
