@@ -8,7 +8,9 @@ from flask_login import LoginManager, current_user, login_required, login_user, 
 from db_model import db, User, Message, FriendRequest, friendship
 import sqlalchemy.exc
 from datetime import datetime
+import eventlet
 
+eventlet.monkey_patch()
 
 app = Flask(__name__)
 
