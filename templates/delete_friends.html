@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Delete Friends</title>
+    <title>删除好友</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/deletefriend.js') }}"></script>
 </head>
 <body>
-    <h1>Delete Friends</h1>
+    <a href="/chat">返回聊天</a>
+    <h2>删除好友</h2>
     <ul>
         {% for friend in friends_list %}
-            <li>{{ friend.username }}</li>
-        {% endfor %}
+        <li>
+            {{ friend.username }}
+            <button onclick="comfirmDeleteFriend({{ friend.id }})">删除</button>
+        </li>
+    {% endfor %}
     </ul>
 </body>
 </html>

@@ -23,6 +23,9 @@ login_manager.init_app(app)
 
 # 初始化数据库
 db.init_app(app)
+db.create_all()
+
+
 user_sockets = {}
 
 
@@ -235,7 +238,7 @@ def rejectFriendRequest():
 
     return jsonify(status="success", message="已拒绝好友请求")
 
-# 删除好友
+# 删除好友页面
 @app.route('/deleteFriend', methods=['GET'])
 @login_required
 def deleteFriend():
@@ -245,6 +248,44 @@ def deleteFriend():
     # 这里可以直接将它们传递给前端模板来展示
     return render_template('delete_friends.html', friends_list=friends_list)
 
+# 删除好友
+@app.route('/comfirmDeleteFriend', methods=['POST'])
+@login_required
+def comfirmDeleteFriend():
+    friend_id = request.form.get('friendId')
+    # 获取当前用户ID
+    current_user_id = current_user.id
+
+    # 查找friendship表中的好友关系
+    friendship_1 = db.session.query(friendship).filter(
+        friendship.c.user_id == current_user_id,
+        friendship.c.friend_id == friend_id
+    ).delete()
+
+    friendship_2 = db.session.query(friendship).filter(
+        friendship.c.user_id == friend_id,
+        friendship.c.friend_id == current_user_id
+    ).delete()
+    
+    
+
+    if not friendship_1 and not friendship_2:
+        return jsonify(status="error", error="Friendship not found")
+    
+    # 查找与该好友的所有聊天记录
+    messages = db.session.query(Message).filter(
+        db.or_(
+            db.and_(Message.sender_id == current_user_id, Message.receiver_id == friend_id),
+            db.and_(Message.sender_id == friend_id, Message.receiver_id == current_user_id)
+        )
+    ).delete()
+
+    if not friendship_1 and not friendship_2:
+        return jsonify(status="error", error="Friendship not found")
+    # 提交数据库更改
+    db.session.commit()
+
+    return jsonify(status="success", message="已删除好友并清除聊天记录")
 
 # 退出登录
 @app.route('/logout', methods=['GET'])
