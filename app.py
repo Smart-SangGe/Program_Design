@@ -15,8 +15,7 @@ eventlet.monkey_patch()
 app = Flask(__name__)
 
 app.config.from_object('config')
-socketio = SocketIO()
-socketio.init_app(app)
+socketio = SocketIO(app, async_mode='eventlet')
 
 #初始化
 login_manager = LoginManager()
@@ -297,7 +296,7 @@ def logout():
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # 创建数据库表
-    # app.run(debug=True)
+    # with app.app_context():
+    #     db.create_all()  # 创建数据库表
+    # # app.run(debug=True)
     socketio.run(app, host="0.0.0.0", debug=True)
