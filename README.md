@@ -12,9 +12,9 @@
 
 * **技术栈**
 
-后端：Nginx + uWSGI + Flask + Flask-SocketIO
+后端：Nginx + uWSGI + Flask + eventlet
 
-数据库： mysql
+数据库： sqlite
 
 前端 : HTML, CSS, JavaScript + Socket.io客户端库
 
@@ -24,13 +24,12 @@
 
 python 3.11.0
 pip 23.2.1
-flask-2.3.3
+
 
 服务器环境：
 
-docker 24.0.5
+docker 24.0.5  
 python:latest
-mariadb:latest
 
 ### 3. 功能实现
 
