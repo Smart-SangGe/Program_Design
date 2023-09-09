@@ -103,7 +103,7 @@ def handle_message(data):
     # 创建一个新的消息对象
     new_message = Message(
         content=message_content,
-        sender_id=current_user.id, 
+        sender_id=current_user.id,  #type: ignore
         receiver_id=receiver_id,
         timestamp=datetime.utcnow()  # 可以选择设置这个，但由于你已经在模型中设置了默认值，这不是必须的
     )
@@ -123,8 +123,8 @@ def handle_message(data):
 @app.route('/chat', methods=['GET', 'POST'])
 @login_required
 def chat():
-    friends_list = current_user.friends.all()
-    user_id = current_user.id
+    friends_list = current_user.friends.all() #type: ignore
+    user_id = current_user.id #type: ignore
     return render_template("chat.html", title="ChatRoom", friends=friends_list, user_id=user_id)
 
 # 获取聊天记录
@@ -134,7 +134,7 @@ def get_chat_history():
     
     friend_id = request.args.get('friend_id', type=int)
     
-    current_user_id = current_user.id
+    current_user_id = current_user.id #type: ignore
 
     # 从数据库中查询与特定好友的聊天记录
     messages_from_db = Message.query.filter(
@@ -165,10 +165,10 @@ def sendFriendRequest():
 
     # 创建好友请求记录
     
-    if current_user.id == friend.id:
+    if current_user.id == friend.id: #type: ignore
         return jsonify(status="error", error="无法添加自己为好友")
     
-    friend_request = FriendRequest(sender_id=current_user.id, receiver_id=friend.id)
+    friend_request = FriendRequest(sender_id=current_user.id, receiver_id=friend.id) #type: ignore
     db.session.add(friend_request)
     db.session.commit()
     
@@ -180,7 +180,7 @@ def sendFriendRequest():
 def friendRequests():
 
     # 从数据库中获取所有未处理的好友请求
-    pending_requests = FriendRequest.query.filter_by(receiver_id=current_user.id).all()
+    pending_requests = FriendRequest.query.filter_by(receiver_id=current_user.id).all() #type: ignore
     
     # 这里可以直接将它们传递给前端模板来展示
     return render_template('friend_requests.html', requests=pending_requests)
@@ -243,7 +243,7 @@ def rejectFriendRequest():
 @login_required
 def deleteFriend():
     # 从数据库中获取所有好友
-    friends_list = current_user.friends.all()
+    friends_list = current_user.friends.all() #type: ignore
     
     # 这里可以直接将它们传递给前端模板来展示
     return render_template('delete_friends.html', friends_list=friends_list)
@@ -254,7 +254,7 @@ def deleteFriend():
 def comfirmDeleteFriend():
     friend_id = request.form.get('friendId')
     # 获取当前用户ID
-    current_user_id = current_user.id
+    current_user_id = current_user.id #type: ignore
 
     # 查找friendship表中的好友关系
     friendship_1 = db.session.query(friendship).filter(
