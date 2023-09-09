@@ -10,7 +10,7 @@ body {
 
 .chat-container {
     position: relative;
-    width: 1300px;
+    width: 80%;
     height: 100%;
     border: 1px solid #000000;
     background-color: #fff;
@@ -80,7 +80,7 @@ body {
 }
 
 .friends-container {
-    width: 300px;  /* 或其他你喜欢的宽度 */
+    width: 20%; 
     height: inherit;
     background-color: #aeacf3;
     border: 1px solid #000000;
