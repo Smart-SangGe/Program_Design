@@ -14,5 +14,5 @@ ENV FLASK_APP=app.py
 
 EXPOSE 8000
 
-
-CMD ["python", "app.py"]
+# Run uWSGI when the container launches
+CMD ["uwsgi", "--ini", "config/uwsgi.ini"]
