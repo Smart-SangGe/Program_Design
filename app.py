@@ -8,9 +8,6 @@ from flask_login import LoginManager, current_user, login_required, login_user, 
 from db_model import db, User, Message, FriendRequest, friendship
 import sqlalchemy.exc
 from datetime import datetime
-import eventlet
-
-eventlet.monkey_patch()
 
 app = Flask(__name__)
 
@@ -299,4 +296,4 @@ if __name__ == '__main__':
     # with app.app_context():
     #     db.create_all()  # 创建数据库表
     # # app.run(debug=True)
-    socketio.run(app, host="0.0.0.0")
+    socketio.run(app, host="0.0.0.0", debug=True)

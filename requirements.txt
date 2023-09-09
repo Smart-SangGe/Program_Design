@@ -5,4 +5,4 @@ Flask-WTF
 uwsgi
 Flask-SocketIO
 Flask-Login
-eventlet
+gevent
