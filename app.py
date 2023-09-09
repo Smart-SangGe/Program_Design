@@ -11,9 +11,7 @@ from datetime import datetime
 
 
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = 'a_secure_key'
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config.from_object('config')
 socketio = SocketIO()
 socketio.init_app(app)

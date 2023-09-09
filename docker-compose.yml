@@ -6,7 +6,7 @@ services:
     command: uwsgi --ini config/uwsgi.ini
     volumes:
       - ./logs/uwsgilogs:/app/logs/uwsgilogs
-      - ./instance:/app/logs/
+      - ./instance:/app/instance
     expose:
       - "8000"
   
