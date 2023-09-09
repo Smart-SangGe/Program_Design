@@ -2,7 +2,6 @@ flask
 pymysql
 Flask-SQLAlchemy
 Flask-WTF
-uwsgi
 Flask-SocketIO
 Flask-Login
 eventlet
