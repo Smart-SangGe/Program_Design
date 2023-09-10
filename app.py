@@ -12,7 +12,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 app.config.from_object('config')
-socketio = SocketIO(app, async_mode='eventlet')
+socketio = SocketIO(app)
 
 #初始化
 login_manager = LoginManager()
