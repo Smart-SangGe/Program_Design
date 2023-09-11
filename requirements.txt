@@ -1,5 +1,4 @@
 flask
-pymysql
 Flask-SQLAlchemy
 Flask-WTF
 uwsgi
