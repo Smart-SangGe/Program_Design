@@ -3,15 +3,19 @@ version: '3'
 services:
   app:
     image: git.mamahaha.work/sangge/chatroom:latest
+    container_name: chatroom
     command: uwsgi --ini config/uwsgi.ini
     volumes:
       - ./logs/uwsgilogs:/app/logs/uwsgilogs
       - ./instance:/app/instance
     expose:
       - "8000"
+    depends_on:
+      - mariadb
   
   nginx:
     image: git.mamahaha.work/sangge/chatnginx:latest
+    container_name: chatnginx
     ports:
       - "81:80"
     volumes:

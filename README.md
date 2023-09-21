@@ -14,7 +14,7 @@
 
 后端：Nginx + uWSGI + Flask + eventlet
 
-数据库： sqlite
+数据库： mariadb
 
 前端 : HTML, CSS, JavaScript + Socket.io客户端库
 
@@ -29,7 +29,10 @@ pip 23.2.1
 服务器环境：
 
 docker 24.0.5  
+image:
 python:latest
+nginx:latest
+mariadb:latest
 
 ### 3. 功能实现
 
