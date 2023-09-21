@@ -18,3 +18,18 @@ services:
       - ./logs/nginxlogs:/var/log/nginx
     depends_on:
       - app
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: flaskdb
+      MYSQL_USER: flaskuser
+      MYSQL_PASSWORD: flaskpassword
+    expose:
+      - "3306"
+    volumes:
+      - volumes:
+      - E:\chatroom\instance:/var/lib/mysql
+

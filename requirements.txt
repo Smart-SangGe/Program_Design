@@ -5,3 +5,4 @@ uwsgi
 Flask-SocketIO
 Flask-Login
 gevent
+pymysql
