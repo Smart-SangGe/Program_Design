@@ -12,7 +12,7 @@
 
 * **技术栈**
 
-后端：Nginx + uWSGI + Flask + eventlet
+后端：Nginx + uWSGI + Flask + gevent
 
 数据库： mariadb
 
