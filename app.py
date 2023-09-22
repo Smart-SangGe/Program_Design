@@ -42,7 +42,8 @@ def index():
 # 注册表单
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    password = PasswordField('Password', validators=[DataRequired(),Length(min=8,max=20),Regexp(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])', message='密码必须包含至少一个小写字母、一个大写字母和一个数字。')])
+    password = PasswordField('Password', validators=[DataRequired(),Length(min=8,max=20),\
+        Regexp(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])', message='密码必须包含至少一个小写字母、一个大写字母和一个数字。')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password',message='两次输入的密码必须匹配。')])
     submit = SubmitField('Sign Up')
 
@@ -103,7 +104,7 @@ def handle_message(data):
         content=message_content,
         sender_id=current_user.id,  #type: ignore
         receiver_id=receiver_id,
-        timestamp=datetime.utcnow()  # 可以选择设置这个，但由于你已经在模型中设置了默认值，这不是必须的
+        timestamp=datetime.utcnow() 
     )
     # 添加到数据库会话并提交
     db.session.add(new_message)
@@ -210,10 +211,8 @@ def acceptFriendRequest():
 
     # 删除原始的FriendRequest记录
     db.session.delete(friend_request)
-
     # 提交数据库更改
     db.session.commit()
-
     return jsonify(status="success", message="好友已添加")
 
 # 拒绝好友申请
