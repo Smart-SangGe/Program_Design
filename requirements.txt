@@ -6,3 +6,4 @@ Flask-SocketIO
 Flask-Login
 gevent
 pymysql
+Werkzeug==2.3.0
